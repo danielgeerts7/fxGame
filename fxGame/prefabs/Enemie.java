@@ -1,4 +1,4 @@
-package fxGame;
+package fxGame.prefabs;
 
 import fxGame.scenes.GameScene;
 import javafx.geometry.Point2D;
@@ -13,7 +13,7 @@ public class Enemie extends Character {
 	@Override
 	protected void update() {
 		Point2D player_pos = new Point2D(GameScene.getPlayer().getTranslateX(), GameScene.getPlayer().getTranslateY());
-		this.lookAtPos(player_pos);
+		super.lookAtPos(player_pos);
 	}
 
 }

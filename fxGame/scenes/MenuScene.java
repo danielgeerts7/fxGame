@@ -34,7 +34,7 @@ public class MenuScene extends SuperScene {
 		this.setButtonActions(primaryStage);
 		this.setTextField();
 		
-		this.getChildren().add(mainpane);
+		super.getChildren().add(mainpane);
 	}
 	
 	@Override

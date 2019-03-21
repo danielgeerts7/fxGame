@@ -3,15 +3,17 @@ package fxGame.scenes;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import fxGame.Character;
-import fxGame.Enemie;
 import fxGame.Main;
-import fxGame.Player;
+import fxGame.prefabs.Bullet;
+import fxGame.prefabs.Character;
+import fxGame.prefabs.Enemie;
+import fxGame.prefabs.Player;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -28,46 +30,44 @@ public class GameScene extends SuperScene {
 
 	private static Player player = null;
 	private List<Enemie> enemies = null;
-	
-	public static Player getPlayer() { return player; }
+
+	private Group bullets = null;
+
+	Label player_info = null;
 
 	public GameScene(Stage primaryStage, Color bg_color) {
 		super();
-		this.setBackground(new Background(new BackgroundFill(bg_color, CornerRadii.EMPTY, Insets.EMPTY)));
+		super.setBackground(new Background(new BackgroundFill(bg_color, CornerRadii.EMPTY, Insets.EMPTY)));
 
 		menupane = new GridPane();
 
-		player = new Player(15, Color.GREEN, primaryStage);
-		player.setTranslateX(100);
-		player.setTranslateY(100);
-		player.setRotate(0);
-		player.setMoveSpeed(3);
-		this.getChildren().add(player);
+		// First: bullets are now layered under the player and enemies
+		bullets = new Group();
+		super.getChildren().add(bullets);
 
+		// Second: add Player
+		player = new Player(15, Color.GREEN, primaryStage, this);
+		super.getChildren().add(player);
+
+		// Third: add some Enemies
 		enemies = new ArrayList<Enemie>();
-
 		for (int i = 0; i < 200; i++) {
 			Enemie enemie = new Enemie(15, Color.RED);
-			enemie.setTranslateX((int) (Math.random() * (Main.getWidth()*.9) + Main.getWidth()*.05));
-			enemie.setTranslateY((int) (Math.random() * (Main.getHeight()*.6) + Main.getHeight()*.3));
-			this.getChildren().add(enemie);
+			enemie.setTranslateX((int) (Math.random() * (Main.getWidth() * .9) + Main.getWidth() * .05));
+			enemie.setTranslateY((int) (Math.random() * (Main.getHeight() * .6) + Main.getHeight() * .3));
+			super.getChildren().add(enemie);
 			enemies.add(enemie);
 		}
 
-		this.setButtonActions(primaryStage);
+		this.setButtonAndKeyActions(primaryStage);
 
-		this.requestFocus();
-		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent ke) {
-				player.hanldeKeyPressed(ke);
-			}
-		});
-		this.setOnKeyReleased(new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent ke) {
-				player.hanldeKeyReleased(ke);
-			}
-		});
-		this.getChildren().add(menupane);
+		// Fourth: add menu at the top layer
+		super.getChildren().add(menupane);
+
+		player_info = new Label();
+		player_info.setTranslateX(Main.getWidth() / 2);
+		player_info.setTranslateY(0);
+		super.getChildren().add(player_info);
 	}
 
 	/*
@@ -77,15 +77,12 @@ public class GameScene extends SuperScene {
 	 */
 	@Override
 	public void update() {
-		Iterator<Enemie> it = enemies.iterator();
-		Point2D temp = new Point2D(player.getTranslateX(), player.getTranslateY());
-		while (it.hasNext()) {
-			Character e = (Character) it.next();
-			e.lookAtPos(temp);
-		}
+		updateBullets();
+
+		updatePlayerLabel();
 	}
 
-	private void setButtonActions(Stage primaryStage) {
+	private void setButtonAndKeyActions(Stage primaryStage) {
 		btnBackToMenu = new Button("Back to menu");
 		btnBackToMenu.setOnAction(e -> {
 			System.out.println("Starting game scene");
@@ -100,5 +97,80 @@ public class GameScene extends SuperScene {
 		// Attach buttons to this pane
 		menupane.add(btnBackToMenu, 0, 0);
 		menupane.add(btnQuit, 1, 0);
+
+		// Keyboard events
+		this.requestFocus();
+		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent ke) {
+				player.hanldeKeyPressed(ke);
+			}
+		});
+		this.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent ke) {
+				player.hanldeKeyReleased(ke);
+			}
+		});
+	}
+
+	private void updateBullets() {
+		List<Enemie> toRemoveEnemies = new ArrayList<Enemie>();
+		List<Bullet> toRemoveBulls = new ArrayList<Bullet>();
+		Iterator<Enemie> it_enemie = enemies.iterator();
+		while (it_enemie.hasNext()) {
+			Enemie enemie = it_enemie.next();
+			Iterator<Node> it_bull = bullets.getChildren().iterator();
+			while (it_bull.hasNext()) {
+				Bullet bull = (Bullet) it_bull.next();
+				if (bull.getTranslateX() > enemie.getTranslateX() - enemie.getRadius(2)
+						&& bull.getTranslateX() < enemie.getTranslateX() + enemie.getRadius(2)
+						&& bull.getTranslateY() > enemie.getTranslateY() - enemie.getRadius(2)
+						&& bull.getTranslateY() < enemie.getTranslateY() + enemie.getRadius(2)) {
+					enemie.selfDestruct(this);
+					bull.selfDestruct(this);
+					toRemoveEnemies.add(enemie);
+					toRemoveBulls.add(bull);
+				}
+			}
+		}
+
+		for (int i = 0; i < toRemoveEnemies.size(); i++) {
+			enemies.remove(toRemoveEnemies.get(i));
+		}
+
+		for (int i = 0; i < toRemoveBulls.size(); i++) {
+			bullets.getChildren().remove(toRemoveBulls.get(i));
+		}
+	}
+
+	private void updatePlayerLabel() {
+		String value = "";
+		value += "Current bullets on screen:	" + bullets.getChildren().size() + "\n";
+		value += "Enemies left:				" + enemies.size();
+
+		player_info.setText(value);
+	}
+
+	public void addBullet(Bullet newBull) {
+		bullets.getChildren().add(newBull);
+	}
+
+	public void removeBullet(Bullet newBull) {
+		bullets.getChildren().remove(newBull);
+	}
+
+	public List<Bullet> getBullets(Character character) {
+		List<Bullet> temp = new ArrayList<Bullet>();
+		Iterator<Node> it = bullets.getChildren().iterator();
+		while (it.hasNext()) {
+			Bullet b = (Bullet) it.next();
+			if (b.getShooter().equals(character)) {
+				temp.add(b);
+			}
+		}
+		return temp;
+	}
+
+	public static Player getPlayer() {
+		return player;
 	}
 }

@@ -10,7 +10,7 @@ public abstract class SuperScene extends Pane {
 	private final long[] frameTimes = new long[100];
     private int frameTimeIndex = 0;
     private boolean arrayFilled = false;
-    Label label = null;
+    Label label_fps = null;
 
 	public SuperScene() {
 		AnimationTimer animator = new AnimationTimer()
@@ -18,12 +18,12 @@ public abstract class SuperScene extends Pane {
 	        @Override
 	        public void handle(long now) 
 	        {
-	        	if (label != null) {
-	        		label.requestFocus();
+	        	if (label_fps != null) {
+	        		label_fps.requestFocus();
 	        	} else {
-	        		label = new Label();
-	                label.setText(String.format("FPS null"));
-	        	    label.setTranslateX(Main.getWidth()*0.9);
+	        		label_fps = new Label();
+	                label_fps.setText(String.format("FPS null"));
+	        	    label_fps.setTranslateX(Main.getWidth()*0.9);
 	        	}
 	            update();
 	            showFPS(now);
@@ -31,11 +31,11 @@ public abstract class SuperScene extends Pane {
 	    };
 	    animator.start();
 	    
-	    label = new Label();
-        label.setText(String.format("FPS null"));
-	    label.setTranslateX(Main.getWidth()*0.9);
-	    this.getChildren().add(label);
-	    label.requestFocus();
+	    label_fps = new Label();
+        label_fps.setText(String.format("FPS null"));
+	    label_fps.setTranslateX(Main.getWidth()*0.9);
+	    super.getChildren().add(label_fps);
+	    label_fps.requestFocus();
 	}
 	
 	private void showFPS(long now) {
@@ -49,9 +49,9 @@ public abstract class SuperScene extends Pane {
             long elapsedNanos = now - oldFrameTime;
             long elapsedNanosPerFrame = elapsedNanos / frameTimes.length;
             double frameRate = 1_000_000_000.0 / elapsedNanosPerFrame;
-            if (label != null) {
-	            label.setText(String.format("FPS %.1f", frameRate));
-	            label.requestFocus();
+            if (label_fps != null) {
+	            label_fps.setText(String.format("FPS %.1f", frameRate));
+	            label_fps.requestFocus();
             }
         }
 	}

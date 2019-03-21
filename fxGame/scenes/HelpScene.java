@@ -51,7 +51,7 @@ public class HelpScene extends SuperScene {
 		credits.setText("Made by Daniël Geerts");
 		credits.setFill(Color.WHITE);
 		mainpane.add(credits, 3, 10);
-		this.getChildren().add(mainpane);
+		super.getChildren().add(mainpane);
 	}
 
 	private void setButtonActions(Stage primaryStage) {

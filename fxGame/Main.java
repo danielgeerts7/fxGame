@@ -24,7 +24,7 @@ public class Main extends Application {
 		primaryStage.setWidth(width);
 		primaryStage.setHeight(height);
 		
-		MenuScene menu = new MenuScene(primaryStage, Color.LIGHTBLUE);
+		MenuScene menu = new MenuScene(primaryStage, Color.MIDNIGHTBLUE);
 		Scene scene = new Scene(menu);
 		primaryStage.setTitle("DIDGY shooter game - javaFX"); // Set the stage title
 		primaryStage.setScene(scene); // Place the scene in the stage
@@ -37,7 +37,7 @@ public class Main extends Application {
 		switch (newstate) {
 			case MENU:  // Go back to menu
 				System.out.println("----> main menu");
-				MenuScene menu = new MenuScene(primaryStage, Color.LIGHTBLUE);
+				MenuScene menu = new MenuScene(primaryStage, Color.MIDNIGHTBLUE);
 			    primaryStage.getScene().setRoot(menu);
 			    
 			break;
@@ -49,7 +49,7 @@ public class Main extends Application {
 				break;
 			case HELP:  // Help scene
 				System.out.println("----> help scene");
-				HelpScene helpscene = new HelpScene(primaryStage, Color.LIGHTSALMON);
+				HelpScene helpscene = new HelpScene(primaryStage, Color.MIDNIGHTBLUE);
 			    primaryStage.getScene().setRoot(helpscene);
 				
 			    break;
