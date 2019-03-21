@@ -1,6 +1,7 @@
 package fxGame;
 
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Point2D;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -33,19 +34,44 @@ public abstract class Character extends StackPane {
 		
 	    this.getChildren().addAll(l_arm, r_arm, body, l_eye, r_eye);
 		
-	    AnimationTimer animator = new AnimationTimer()
-		    {
+	    new AnimationTimer(){
 		        @Override
-		        public void handle(long arg0) 
-		        {
+		        public void handle(long arg0)  {
 		            update();
+		            StayWithinScreen();
 		        }
-		    };
-		    
-		    animator.start();
+	        }.start();
 		}
 
 	protected abstract void update();
+	
+	private void StayWithinScreen() {
+		if (this.getTranslateX() < 0) {
+			this.setTranslateX(0);
+		}
+		if (this.getTranslateX() + this.getRadius(2) > Main.getWidth()) {
+			this.setTranslateX(Main.getWidth() - this.getRadius(2));
+		}
+		if (this.getTranslateY() < 0) {
+			this.setTranslateY(0);
+		}
+		if (this.getTranslateY() + this.getRadius(4) > Main.getHeight()) {
+			this.setTranslateY(Main.getHeight() - this.getRadius(4));
+		}
+	}
+	
+	public void lookAtPos(Point2D mouse_pos) {
+		Point2D player_pos = new Point2D(this.getTranslateX(), this.getTranslateY());
+
+		Point2D p3 = mouse_pos.subtract(player_pos);
+		Point2D p4 = new Point2D(1, 0);
+		
+		if (mouse_pos.getY() < player_pos.getY()) {
+			this.setRotate(p4.angle(p3) *-1);
+		} else {
+			this.setRotate(p4.angle(p3));
+		}
+	}
 	
 	private Rectangle createRect(Color col) {
 		Rectangle r = new Rectangle();
@@ -62,15 +88,7 @@ public abstract class Character extends StackPane {
 		this.setTranslateY(this.getTranslateY() + y);
 	}
 	
-	public void turnAround() {
-		this.setRotate(this.getRotate()+1);
-	}
-	
-	public void turnAround(int speed) {
-		this.setRotate(this.getRotate()+speed);
-	}
-	
-	public int getRadius() {
-		return this.radius;
+	public int getRadius(int multiplayer) {
+		return this.radius * multiplayer;
 	}
 }

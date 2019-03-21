@@ -13,71 +13,61 @@ import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class GameScene extends SuperScene {
 
-	private static GridPane mainpane = null;
-	private static Pane gamepane = null;
+	private static GridPane menupane = null;
 	private Button btnBackToMenu = null;
 	private Button btnQuit = null;
 
-	private Player player = null;
+	private static Player player = null;
 	private List<Enemie> enemies = null;
-	private MouseEvent mouseEventMoved = null;
 	
+	public static Player getPlayer() { return player; }
+
 	public GameScene(Stage primaryStage, Color bg_color) {
 		super();
+		this.setBackground(new Background(new BackgroundFill(bg_color, CornerRadii.EMPTY, Insets.EMPTY)));
 
-		mainpane = new GridPane();
+		menupane = new GridPane();
 
-		gamepane = new Pane();
-		gamepane.setBackground(new Background(new BackgroundFill(bg_color, CornerRadii.EMPTY, Insets.EMPTY)));
-
-		player = new Player(15, Color.GREEN);
+		player = new Player(15, Color.GREEN, primaryStage);
 		player.setTranslateX(100);
 		player.setTranslateY(100);
 		player.setRotate(0);
 		player.setMoveSpeed(3);
-		gamepane.getChildren().add(player);
+		this.getChildren().add(player);
 
 		enemies = new ArrayList<Enemie>();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 200; i++) {
 			Enemie enemie = new Enemie(15, Color.RED);
-			enemie.setTranslateX((int) (Math.random() * Main.getWidth() * 0.85) + enemie.getRadius());
-			enemie.setTranslateY((int) (Math.random() * Main.getHeight() * 0.85) + enemie.getRadius());
-			gamepane.getChildren().add(enemie);
+			enemie.setTranslateX((int) (Math.random() * (Main.getWidth()*.9) + Main.getWidth()*.05));
+			enemie.setTranslateY((int) (Math.random() * (Main.getHeight()*.6) + Main.getHeight()*.3));
+			this.getChildren().add(enemie);
 			enemies.add(enemie);
 		}
 
-		primaryStage.getScene().addEventFilter(MouseEvent.MOUSE_MOVED, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				mouseEventMoved = mouseEvent;
+		this.setButtonActions(primaryStage);
+
+		this.requestFocus();
+		this.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent ke) {
+				player.hanldeKeyPressed(ke);
 			}
 		});
-
-		this.setButtonActions(primaryStage);
-		
-        gamepane.requestFocus();
-        gamepane.setOnKeyPressed(new EventHandler<KeyEvent>() {
-        	public void handle(KeyEvent ke) {
-        		player.hanldeKeyPressed(ke);
-        	}
-        });
-        gamepane.setOnKeyReleased(new EventHandler<KeyEvent>() {
-        	public void handle(KeyEvent ke) {
-        		player.hanldeKeyReleased(ke);
-        	}
-        });
+		this.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent ke) {
+				player.hanldeKeyReleased(ke);
+			}
+		});
+		this.getChildren().add(menupane);
 	}
 
 	/*
@@ -87,14 +77,11 @@ public class GameScene extends SuperScene {
 	 */
 	@Override
 	public void update() {
-		if (mouseEventMoved != null) {
-			player.lookAtPos(new Point2D(mouseEventMoved.getX(), mouseEventMoved.getY()));
-		}
-		
 		Iterator<Enemie> it = enemies.iterator();
+		Point2D temp = new Point2D(player.getTranslateX(), player.getTranslateY());
 		while (it.hasNext()) {
 			Character e = (Character) it.next();
-			e.turnAround();
+			e.lookAtPos(temp);
 		}
 	}
 
@@ -111,12 +98,7 @@ public class GameScene extends SuperScene {
 		});
 
 		// Attach buttons to this pane
-		mainpane.add(btnBackToMenu, 0, 0);
-		mainpane.add(btnQuit, 1, 0);
-		gamepane.getChildren().add(mainpane);
-	}
-
-	public Pane getMainPane() {
-		return gamepane;
+		menupane.add(btnBackToMenu, 0, 0);
+		menupane.add(btnQuit, 1, 0);
 	}
 }

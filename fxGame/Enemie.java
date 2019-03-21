@@ -1,5 +1,7 @@
 package fxGame;
 
+import fxGame.scenes.GameScene;
+import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
 public class Enemie extends Character {
@@ -10,7 +12,8 @@ public class Enemie extends Character {
 
 	@Override
 	protected void update() {
-		
+		Point2D player_pos = new Point2D(GameScene.getPlayer().getTranslateX(), GameScene.getPlayer().getTranslateY());
+		this.lookAtPos(player_pos);
 	}
 
 }

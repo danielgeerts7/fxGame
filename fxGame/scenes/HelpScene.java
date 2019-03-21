@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class HelpScene {
+public class HelpScene extends SuperScene {
 
 	private static GridPane mainpane = null;
 	private Button btnBackToMenu = null;
@@ -22,6 +22,7 @@ public class HelpScene {
 
 	public HelpScene(Stage primaryStage, Color bg_color) {
 		mainpane = new GridPane();
+		mainpane.setMinSize(Main.getWidth(), Main.getHeight());
 		mainpane.setBackground(new Background(new BackgroundFill(bg_color, CornerRadii.EMPTY, Insets.EMPTY)));
 		mainpane.setPadding(new Insets(10, 10, 10, 10));
 
@@ -50,6 +51,7 @@ public class HelpScene {
 		credits.setText("Made by Daniël Geerts");
 		credits.setFill(Color.WHITE);
 		mainpane.add(credits, 3, 10);
+		this.getChildren().add(mainpane);
 	}
 
 	private void setButtonActions(Stage primaryStage) {
@@ -70,7 +72,8 @@ public class HelpScene {
 		mainpane.add(btnQuit, 0, 1);
 	}
 
-	public GridPane getMainPane() {
-		return mainpane;
+	@Override
+	public void update() {
+
 	}
 }

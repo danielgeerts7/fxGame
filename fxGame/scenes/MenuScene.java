@@ -27,11 +27,22 @@ public class MenuScene extends SuperScene {
 		
 		mainpane = new GridPane();
 		mainpane.setAlignment(Pos.CENTER);
+		mainpane.setMinSize(Main.getWidth(), Main.getHeight());
 		mainpane.setBackground(new Background(new BackgroundFill(bg_color, CornerRadii.EMPTY, Insets.EMPTY)));
 		mainpane.setPadding(new Insets(10, 10, 10, 10));
 
 		this.setButtonActions(primaryStage);
+		this.setTextField();
+		
+		this.getChildren().add(mainpane);
+	}
+	
+	@Override
+	public void update() {
 
+	}
+	
+	private void setTextField() {
 		title = new Text();
 		title.setText("This is my awesome java game!");
 		title.setFill(Color.WHITE);
@@ -41,16 +52,6 @@ public class MenuScene extends SuperScene {
 		credits.setText("Made by Daniël Geerts");
 		credits.setFill(Color.WHITE);
 		mainpane.add(credits, 3, 3);
-	}
-	
-	public void update() {
-		credits.setTranslateX(credits.getTranslateX() + 0.1);
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void setButtonActions(Stage primaryStage) {
@@ -73,9 +74,5 @@ public class MenuScene extends SuperScene {
 		mainpane.add(btnStart, 1, 1);
 		mainpane.add(btnHelp, 1, 2);
 		mainpane.add(btnQuit, 1, 3);
-	}
-
-	public GridPane getMainPane() {
-		return mainpane;
 	}
 }
