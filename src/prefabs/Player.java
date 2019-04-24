@@ -1,8 +1,8 @@
-package fxGame.prefabs;
+package prefabs;
 
 import java.util.Date;
 import java.util.List;
-import fxGame.scenes.GameScene;
+import scenes.GameScene;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;

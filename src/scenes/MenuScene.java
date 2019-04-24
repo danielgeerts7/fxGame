@@ -1,6 +1,7 @@
-package fxGame.scenes;
+package scenes;
 
-import fxGame.Main;
+import M.Config;
+import M.Main;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -27,7 +28,7 @@ public class MenuScene extends SuperScene {
 		
 		mainpane = new GridPane();
 		mainpane.setAlignment(Pos.CENTER);
-		mainpane.setMinSize(Main.getWidth(), Main.getHeight());
+		mainpane.setMinSize(Config.getWidth(), Config.getHeight());
 		mainpane.setBackground(new Background(new BackgroundFill(bg_color, CornerRadii.EMPTY, Insets.EMPTY)));
 		mainpane.setPadding(new Insets(10, 10, 10, 10));
 
@@ -57,12 +58,12 @@ public class MenuScene extends SuperScene {
 	private void setButtonActions(Stage primaryStage) {
 		btnStart = new Button("Start game");
 		btnStart.setOnAction(e -> {
-			Main.SwitchScene(Main.state.GAME, primaryStage);
+			Main.SwitchScene(Config.state.GAME, primaryStage);
 		});
 
 		btnHelp = new Button("Help!");
 		btnHelp.setOnAction(e -> {
-			Main.SwitchScene(Main.state.HELP, primaryStage);
+			Main.SwitchScene(Config.state.HELP, primaryStage);
 		});
 
 		btnQuit = new Button("Quit");

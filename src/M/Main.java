@@ -1,28 +1,20 @@
-package fxGame;
+package M;
 
-import fxGame.scenes.GameScene;
-import fxGame.scenes.HelpScene;
-import fxGame.scenes.MenuScene;
+import scenes.GameScene;
+import scenes.HelpScene;
+import scenes.MenuScene;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class Main extends Application {
-	
-	public static enum state {MENU, GAME, HELP};
-	
-	private static int width = 1280;
-	private static int height = 720;
-	
-	public static int getWidth() { return width; }
-	public static int getHeight() { return height; }
+public final class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {		
-		primaryStage.setWidth(width);
-		primaryStage.setHeight(height);
+		primaryStage.setWidth(Config.getWidth());
+		primaryStage.setHeight(Config.getHeight());
 		
 		MenuScene menu = new MenuScene(primaryStage, Color.MIDNIGHTBLUE);
 		Scene scene = new Scene(menu);
@@ -33,7 +25,7 @@ public class Main extends Application {
 		primaryStage.show(); // Display the stage
 	}
 	
-	public static void SwitchScene(state newstate, Stage primaryStage) {
+	public static void SwitchScene(Config.state newstate, Stage primaryStage) {
 		switch (newstate) {
 			case MENU:  // Go back to menu
 				System.out.println("----> main menu");

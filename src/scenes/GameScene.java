@@ -1,13 +1,15 @@
-package fxGame.scenes;
+package scenes;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import fxGame.Main;
-import fxGame.prefabs.Bullet;
-import fxGame.prefabs.Character;
-import fxGame.prefabs.Enemie;
-import fxGame.prefabs.Player;
+
+import M.Config;
+import M.Main;
+import prefabs.Bullet;
+import prefabs.Character;
+import prefabs.Enemie;
+import prefabs.Player;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -53,8 +55,8 @@ public class GameScene extends SuperScene {
 		enemies = new ArrayList<Enemie>();
 		for (int i = 0; i < 200; i++) {
 			Enemie enemie = new Enemie(15, Color.RED);
-			enemie.setTranslateX((int) (Math.random() * (Main.getWidth() * .9) + Main.getWidth() * .05));
-			enemie.setTranslateY((int) (Math.random() * (Main.getHeight() * .6) + Main.getHeight() * .3));
+			enemie.setTranslateX((int) (Math.random() * (Config.getWidth() * .9) + Config.getWidth() * .05));
+			enemie.setTranslateY((int) (Math.random() * (Config.getHeight() * .6) + Config.getHeight() * .3));
 			super.getChildren().add(enemie);
 			enemies.add(enemie);
 		}
@@ -65,7 +67,7 @@ public class GameScene extends SuperScene {
 		super.getChildren().add(menupane);
 
 		player_info = new Label();
-		player_info.setTranslateX(Main.getWidth() / 2);
+		player_info.setTranslateX(Config.getWidth() / 2);
 		player_info.setTranslateY(0);
 		super.getChildren().add(player_info);
 	}
@@ -73,7 +75,7 @@ public class GameScene extends SuperScene {
 	/*
 	 * Every frame this function will run
 	 * 
-	 * @see fxGame.SuperScene#update()
+	 * @see SuperScene#update()
 	 */
 	@Override
 	public void update() {
@@ -86,7 +88,7 @@ public class GameScene extends SuperScene {
 		btnBackToMenu = new Button("Back to menu");
 		btnBackToMenu.setOnAction(e -> {
 			System.out.println("Starting game scene");
-			Main.SwitchScene(Main.state.MENU, primaryStage);
+			Main.SwitchScene(Config.state.MENU, primaryStage);
 		});
 
 		btnQuit = new Button("Quit");

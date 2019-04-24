@@ -1,6 +1,7 @@
-package fxGame.scenes;
+package scenes;
 
-import fxGame.Main;
+import M.Config;
+import M.Main;
 import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -23,7 +24,7 @@ public abstract class SuperScene extends Pane {
 	        	} else {
 	        		label_fps = new Label();
 	                label_fps.setText(String.format("FPS null"));
-	        	    label_fps.setTranslateX(Main.getWidth()*0.9);
+	        	    label_fps.setTranslateX(Config.getWidth()*0.9);
 	        	}
 	            update();
 	            showFPS(now);
@@ -33,7 +34,7 @@ public abstract class SuperScene extends Pane {
 	    
 	    label_fps = new Label();
         label_fps.setText(String.format("FPS null"));
-	    label_fps.setTranslateX(Main.getWidth()*0.9);
+	    label_fps.setTranslateX(Config.getWidth()*0.9);
 	    super.getChildren().add(label_fps);
 	    label_fps.requestFocus();
 	}

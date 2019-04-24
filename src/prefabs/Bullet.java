@@ -1,7 +1,7 @@
-package fxGame.prefabs;
+package prefabs;
 
-import fxGame.Main;
-import fxGame.scenes.SuperScene;
+import scenes.SuperScene;
+import M.Config;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -49,9 +49,9 @@ public class Bullet extends Prefab {
 	@Override
 	protected void StayWithinScreen() {
 		if (super.getTranslateX() < 0 ||
-			super.getTranslateX() > Main.getWidth() ||
+			super.getTranslateX() > Config.getWidth() ||
 			super.getTranslateY() < 0 ||
-			super.getTranslateY() > Main.getHeight()) {
+			super.getTranslateY() > Config.getHeight()) {
 			super.selfDestruct(parent);
 		}
 	}

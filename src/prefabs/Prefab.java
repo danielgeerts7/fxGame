@@ -1,7 +1,7 @@
-package fxGame.prefabs;
+package prefabs;
 
-import fxGame.Main;
-import fxGame.scenes.SuperScene;
+import scenes.SuperScene;
+import M.Config;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
@@ -46,14 +46,14 @@ public abstract class Prefab extends StackPane {
 			if (super.getTranslateX() < 0) {
 				super.setTranslateX(0);
 			}
-			if (super.getTranslateX() + radius > Main.getWidth()) {
-				super.setTranslateX(Main.getWidth() - radius);
+			if (super.getTranslateX() + radius > Config.getWidth()) {
+				super.setTranslateX(Config.getWidth() - radius);
 			}
 			if (super.getTranslateY() < 0) {
 				super.setTranslateY(0);
 			}
-			if (super.getTranslateY() + (radius * 2) > Main.getHeight()) {
-				super.setTranslateY(Main.getHeight() - (radius * 2));
+			if (super.getTranslateY() + (radius * 2) > Config.getHeight()) {
+				super.setTranslateY(Config.getHeight() - (radius * 2));
 			}
 		}
 	}

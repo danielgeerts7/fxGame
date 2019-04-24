@@ -1,6 +1,7 @@
-package fxGame.scenes;
+package scenes;
 
-import fxGame.Main;
+import M.Config;
+import M.Main;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
@@ -22,7 +23,7 @@ public class HelpScene extends SuperScene {
 
 	public HelpScene(Stage primaryStage, Color bg_color) {
 		mainpane = new GridPane();
-		mainpane.setMinSize(Main.getWidth(), Main.getHeight());
+		mainpane.setMinSize(Config.getWidth(), Config.getHeight());
 		mainpane.setBackground(new Background(new BackgroundFill(bg_color, CornerRadii.EMPTY, Insets.EMPTY)));
 		mainpane.setPadding(new Insets(10, 10, 10, 10));
 
@@ -58,7 +59,7 @@ public class HelpScene extends SuperScene {
 		btnBackToMenu = new Button("Back to menu");
 		btnBackToMenu.setOnAction(e -> {
 			System.out.println("Starting game scene");
-			Main.SwitchScene(Main.state.MENU, primaryStage);
+			Main.SwitchScene(Config.state.MENU, primaryStage);
 		});
 		
 		

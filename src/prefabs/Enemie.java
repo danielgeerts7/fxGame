@@ -1,6 +1,6 @@
-package fxGame.prefabs;
+package prefabs;
 
-import fxGame.scenes.GameScene;
+import scenes.GameScene;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
